@@ -1,2 +1,5 @@
 *.sh
 .env
+lh-wechat
+lh-mdb-reader
+mdb
