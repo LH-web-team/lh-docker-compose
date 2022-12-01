@@ -35,13 +35,12 @@ services:
       - PORT=3000
       - DATABASE_URL=postgres://postgres:password@pgsql/lh_wechat
       - WECHAT_AUTH_BASE=https://open.weixin.qq.com/connect/oauth2/authorize
-      - WECHAT_APP_ID=wx3129c409dfe483b0
-      - WECHAT_APP_SECRET=41b83ce45249d92dc8c7c08b391f9861
-      - HOST_URL=http://192.168.31.100:3000
       - MDB_API_BASE=http://mdb-reader:3030
-      - MD5_SALT=lh-unsafe-salt
-      - SESSION_SECRET_KEY=30c8d693a57ecf5a27fd405ec952d14d
-      - DISABLE_SECURE_COOKIES=TRUE
+      - WECHAT_APP_ID=${WECHAT_APP_ID}
+      - WECHAT_APP_SECRET=${WECHAT_APP_SECRET}
+      - HOST_URL=${HOST_URL}
+      - MD5_SALT=${MD5_SALT}
+      - SESSION_SECRET_KEY=${SESSION_SECRET_KEY}
   mdb-reader:
     hostname: mdb-reader
     image: mdb-reader
