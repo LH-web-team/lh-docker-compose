@@ -23,7 +23,7 @@ services:
     hostname: wechat-web
     image: wechat-web
     build:
-      context: ./lh-wechat
+      context: ${LH_WECHAT_DIR}
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
@@ -45,7 +45,7 @@ services:
     hostname: mdb-reader
     image: mdb-reader
     build:
-      context: ./lh-mdb-reader
+      context: ${LH_MDB_DIR}
       dockerfile: Dockerfile
     networks:
       - web
