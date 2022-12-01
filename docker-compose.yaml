@@ -1,0 +1,60 @@
+version: '3'
+
+volumes:
+  mdb-data:
+  postgres-data:
+
+networks:
+  web:
+    driver: bridge
+
+services:
+  pgsql:
+    hostname: pgsql
+    image: postgres
+    restart: always
+    networks:
+      - web
+    environment:
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  wechat-web:
+    hostname: wechat-web
+    image: wechat-web
+    build:
+      context: ./lh-wechat
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - web
+    depends_on:
+      - pgsql
+    environment:
+      - PORT=3000
+      - DATABASE_URL=postgres://postgres:password@pgsql/lh_wechat
+      - WECHAT_AUTH_BASE=https://open.weixin.qq.com/connect/oauth2/authorize
+      - WECHAT_APP_ID=wx3129c409dfe483b0
+      - WECHAT_APP_SECRET=41b83ce45249d92dc8c7c08b391f9861
+      - HOST_URL=http://192.168.31.100:3000
+      - MDB_API_BASE=http://mdb-reader:3030
+      - MD5_SALT=lh-unsafe-salt
+      - SESSION_SECRET_KEY=30c8d693a57ecf5a27fd405ec952d14d
+      - DISABLE_SECURE_COOKIES=TRUE
+  mdb-reader:
+    hostname: mdb-reader
+    image: mdb-reader
+    build:
+      context: ./lh-mdb-reader
+      dockerfile: Dockerfile
+    networks:
+      - web
+    depends_on:
+      - pgsql
+    ports:
+      - "3030:3030"
+    environment:
+      - DATABASE_URL=postgres://postgres:password@pgsql/lh_mdb
+    volumes:
+      - mdb-data:/app/mdb
