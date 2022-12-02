@@ -12,7 +12,7 @@ services:
   pgsql:
     hostname: pgsql
     image: postgres
-    restart: always
+    restart: unless-stopped
     networks:
       - web
     environment:
@@ -22,6 +22,7 @@ services:
   wechat-web:
     hostname: wechat-web
     image: wechat-web
+    restart: unless-stopped
     build:
       context: ${LH_WECHAT_DIR}
       dockerfile: Dockerfile
@@ -44,6 +45,7 @@ services:
   mdb-reader:
     hostname: mdb-reader
     image: mdb-reader
+    restart: unless-stopped
     build:
       context: ${LH_MDB_DIR}
       dockerfile: Dockerfile
